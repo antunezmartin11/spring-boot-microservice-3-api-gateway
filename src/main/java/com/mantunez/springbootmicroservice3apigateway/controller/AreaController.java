@@ -18,9 +18,9 @@ public class AreaController {
         return areaService.saveArea(request);
     }
 
-    @GetMapping("/getAll")
-    public RespuestaDTO getAllArea(){
-        return areaService.listaArea();
+    @PostMapping("/getAll")
+    public RespuestaDTO getAllArea(@RequestBody Area request){
+        return areaService.listaArea(request);
     }
 
     @PostMapping("/updateArea")

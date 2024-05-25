@@ -22,5 +22,8 @@ public class Tipo_Documento {
     @Column(name = "estado", nullable = false)
     private boolean estado;
 
+    @Column(name="eliminado", nullable = false)
+    private boolean eliminado = false;
+
 
 }

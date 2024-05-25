@@ -26,6 +26,9 @@ public class Area {
     @Column(name = "estado")
     private Boolean estado;
 
+    @Column(name = "eliminado")
+    private boolean eliminado = false;
+
     @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "idGrado", referencedColumnName = "id")
     private Grado grado;

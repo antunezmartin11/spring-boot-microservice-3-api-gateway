@@ -22,7 +22,7 @@ public class AreaServiceImpl implements AreaService {
 
     @Override
     public RespuestaDTO saveArea(Area request){
-        Area existe = areaRepository.findByNombre(request.getNombre());
+        List<Area> existe = areaRepository.findByNombre(request.getNombre());
         RespuestaDTO respuesta = new RespuestaDTO();
         if(existe!=null){
             Area existeAreaGreado = areaRepository.getAreaGrado(request.getNombre(),request.getGrado().getId());
@@ -68,9 +68,9 @@ public class AreaServiceImpl implements AreaService {
     }
 
     @Override
-    public RespuestaDTO listaArea(){
+    public RespuestaDTO listaArea(Area request){
       RespuestaDTO respuesta = new RespuestaDTO();
-      List<Area> lista = areaRepository.getAllArea();
+      List<Area> lista = areaRepository.getAreaGradoActiva(request.getNombre(),request.getEstado(),request.getGrado().getId());
       if(lista!=null){
         respuesta.setMensaje("Registro recuperados");
         respuesta.setCodigo(String.valueOf(HttpStatus.OK.value()));
@@ -92,10 +92,26 @@ public class AreaServiceImpl implements AreaService {
             existe.setNombre(request.getNombre());
             existe.setDescripcion(request.getDescripcion());
             existe.setGrado(request.getGrado());
-            existe = areaRepository.save(existe);
-            respuesta.setCodigo(String.valueOf(HttpStatus.OK.value()));
-            respuesta.setMensaje("Registro actualizado");
-            respuesta.setData(existe);
+            Area existeAreaGreado = areaRepository.getAreaGrado(existe.getNombre(),existe.getGrado().getId());
+            if(existeAreaGreado!=null){
+                if(existeAreaGreado.getId().equals(existe.getId())){
+                    existe = areaRepository.save(existe);
+                    respuesta.setCodigo(String.valueOf(HttpStatus.OK.value()));
+                    respuesta.setMensaje("Registro actualizado");
+                    respuesta.setData(existe);
+
+                }else {
+                    respuesta.setCodigo(String.valueOf(HttpStatus.FOUND.value()));
+                    respuesta.setMensaje("Ya se encuentra registrada un area con esos parametros");
+                    respuesta.setData(existeAreaGreado);
+                }
+            }else {
+                existe = areaRepository.save(existe);
+                respuesta.setCodigo(String.valueOf(HttpStatus.OK.value()));
+                respuesta.setMensaje("Registro actualizado");
+                respuesta.setData(existe);
+            }
+
         }else {
             respuesta.setMensaje("No se encontro ningun registro");
             respuesta.setCodigo(String.valueOf(HttpStatus.NOT_FOUND.value()));
@@ -109,9 +125,10 @@ public class AreaServiceImpl implements AreaService {
         Area existe= areaRepository.findById(id).orElse(null);
         if(existe!=null){
             existe.setEstado(false);
+            existe.setEliminado(true);
             existe = areaRepository.save(existe);
             respuesta.setMensaje("Eliminado correctamente");
-            respuesta.setCodigo(String.valueOf(HttpStatus.NOT_FOUND.value()));
+            respuesta.setCodigo(String.valueOf(HttpStatus.OK.value()));
             respuesta.setData(true);
         }else {
             respuesta.setCodigo(String.valueOf(HttpStatus.NOT_FOUND.value()));

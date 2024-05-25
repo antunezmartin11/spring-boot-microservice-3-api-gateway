@@ -50,9 +50,9 @@ public class TipoDocumentoServiceImpl implements TipoDocumentoService {
     }
 
     @Override
-    public List<Tipo_Documento> getTipoDocumento() throws Exception{
+    public List<Tipo_Documento> getTipoDocumento(String nombre) throws Exception{
 
-        return tipoDocumentoRepository.getTipoDocumentoActivo();
+        return tipoDocumentoRepository.getTipoDocumentoActivo(nombre);
     }
 
     @Override
@@ -84,6 +84,7 @@ public class TipoDocumentoServiceImpl implements TipoDocumentoService {
         RespuestaDTO respuesta =  new RespuestaDTO();
         if(registro!=null){
             registro.setEstado(false);
+            registro.setEliminado(true);
             tipoDocumentoRepository.save(registro);
             respuesta.setCodigo(String.valueOf(HttpStatus.OK.value()));
             respuesta.setMensaje("Registro eliminado");

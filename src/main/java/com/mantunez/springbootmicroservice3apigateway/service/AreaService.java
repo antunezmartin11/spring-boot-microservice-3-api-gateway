@@ -6,7 +6,7 @@ import com.mantunez.springbootmicroservice3apigateway.model.Area;
 public interface AreaService {
     RespuestaDTO saveArea(Area request);
 
-    RespuestaDTO listaArea();
+    RespuestaDTO listaArea(Area request);
 
     RespuestaDTO updateArea(Area request);
 

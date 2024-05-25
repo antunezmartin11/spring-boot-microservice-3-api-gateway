@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 @RequestMapping("api/tipoDocumento")
 public class TipoDocumentoController {
@@ -21,9 +22,9 @@ public class TipoDocumentoController {
         return tipoDocumentoService.register(request);
     }
 
-    @GetMapping("/getTipoDocumento")
-    public RespuestaDTO getListaTipoDocumento() throws Exception{
-        List<Tipo_Documento> registros = tipoDocumentoService.getTipoDocumento();
+    @PostMapping("/getTipoDocumento")
+    public RespuestaDTO getListaTipoDocumento(@RequestBody Tipo_Documento request) throws Exception{
+        List<Tipo_Documento> registros = tipoDocumentoService.getTipoDocumento(request.getNombre());
         RespuestaDTO respuesta = new RespuestaDTO();
         if(registros!=null){
             respuesta.setMensaje("Registros recuperados con exito.");

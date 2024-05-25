@@ -8,7 +8,7 @@ import java.util.List;
 public interface TipoDocumentoService {
     RespuestaDTO register(Tipo_Documento tipoDoc) throws Exception;
 
-    List<Tipo_Documento> getTipoDocumento() throws Exception;
+    List<Tipo_Documento> getTipoDocumento(String nombre) throws Exception;
 
     RespuestaDTO updateTipoDocumento(Tipo_Documento request) throws Exception;
 
